@@ -2,7 +2,8 @@
 
 namespace Betacie\Bundle\PaypalBundle;
 
-use Betacie\Bundle\PaypalBundle\Event\ResponseEvent;
+use Betacie\Bundle\PaypalBundle\Event\CheckoutEvent;
+use Betacie\Bundle\PaypalBundle\Model\PaypalManager;
 use Betacie\Bundle\PaypalBundle\Model\TransactionInterface;
 use Betacie\Bundle\PaypalBundle\PaypalEvents;
 use Betacie\Bundle\PaypalBundle\Request\ExpressCheckoutRequest;
@@ -20,15 +21,17 @@ class Paypal
     private $user;
     private $password;
     private $signature;
-    private $debug;
+    private $manager;
     private $router;
     private $dispatcher;
+    private $debug;
 
-    public function __construct($user, $password, $signature, RouterInterface $router, EventDispatcherInterface $dispatcher, $debug = false)
+    public function __construct($user, $password, $signature, PaypalManager $manager, RouterInterface $router, EventDispatcherInterface $dispatcher, $debug = false)
     {
         $this->user = $user;
         $this->password = $password;
         $this->signature = $signature;
+        $this->manager = $manager;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
         $this->setDebug($debug);
@@ -43,17 +46,18 @@ class Paypal
     public function setExpressCheckout(TransactionInterface $transaction)
     {
         $request = new ExpressCheckoutRequest(array(
-                'METHOD' => 'SetExpressCheckout',
-                'RETURNURL' => $this->router->generate('betacie_paypal.checkout_return', array(), true),
-                'CANCELURL' => $this->router->generate('betacie_paypal.checkout_cancel', array(), true),
-            ));
+            'METHOD' => 'SetExpressCheckout',
+            'RETURNURL' => $this->router->generate('betacie_paypal.checkout_return', array(), true),
+            'CANCELURL' => $this->router->generate('betacie_paypal.checkout_cancel', array(), true),
+        ));
 
         $request->addTransaction($transaction);
 
         $response = $this->request($request);
 
         if ($response->isSuccess()) {
-            $this->dispatcher->dispatch(PaypalEvents::SET_CHECKOUT_SUCCESS, new ResponseEvent($response));
+            $checkout = $this->manager->printCheckout($response->getToken());
+            $this->dispatcher->dispatch(PaypalEvents::SET_CHECKOUT_SUCCESS, new CheckoutEvent($checkout));
         }
 
         return $response;
@@ -68,9 +72,9 @@ class Paypal
     public function getExpressCheckoutDetails($token)
     {
         return $this->request(new Request(array(
-                    'METHOD' => 'GetExpressCheckoutDetails',
-                    'TOKEN' => $token,
-                )));
+                'METHOD' => 'GetExpressCheckoutDetails',
+                'TOKEN' => $token,
+        )));
     }
 
     /**
@@ -82,13 +86,13 @@ class Paypal
     public function doExpressCheckoutPayment(Response $response)
     {
         return $this->request(new Request(array(
-                    'METHOD' => 'DoExpressCheckoutPayment',
-                    'TOKEN' => $response->get('TOKEN'),
-                    'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
-                    'PAYERID' => $response->get('PAYERID'),
-                    'PAYMENTREQUEST_0_AMT' => $response->get('PAYMENTREQUEST_0_AMT'),
-                    'PAYMENTREQUEST_0_CURRENCYCODE' => $response->get('PAYMENTREQUEST_0_CURRENCYCODE'),
-                )));
+                'METHOD' => 'DoExpressCheckoutPayment',
+                'TOKEN' => $response->get('TOKEN'),
+                'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
+                'PAYERID' => $response->get('PAYERID'),
+                'PAYMENTREQUEST_0_AMT' => $response->get('PAYMENTREQUEST_0_AMT'),
+                'PAYMENTREQUEST_0_CURRENCYCODE' => $response->get('PAYMENTREQUEST_0_CURRENCYCODE'),
+        )));
     }
 
     /**
@@ -101,12 +105,12 @@ class Paypal
     public function masspay($receiverEmail, $amount)
     {
         return $this->request(new Request(array(
-                    'METHOD' => 'MassPay',
-                    'RECEIVERTYPE' => 'EmailAddress',
-                    'L_EMAIL0' => $receiverEmail,
-                    'L_AMT0' => $amount,
-                    'CURRENCYCODE' => 'EUR',
-                )));
+                'METHOD' => 'MassPay',
+                'RECEIVERTYPE' => 'EmailAddress',
+                'L_EMAIL0' => $receiverEmail,
+                'L_AMT0' => $amount,
+                'CURRENCYCODE' => 'EUR',
+        )));
     }
 
     /**
@@ -118,9 +122,9 @@ class Paypal
     public function refund($transactionId)
     {
         return $this->request(new Request(array(
-                    'METHOD' => 'RefundTransaction',
-                    'TRANSACTIONID' => $transactionId,
-                )));
+                'METHOD' => 'RefundTransaction',
+                'TRANSACTIONID' => $transactionId,
+        )));
     }
 
     /**

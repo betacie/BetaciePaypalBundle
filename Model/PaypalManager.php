@@ -29,5 +29,8 @@ class PaypalManager
 
         $this->em->persist($checkout);
         $this->em->flush();
+
+        return $checkout;
     }
+
 }

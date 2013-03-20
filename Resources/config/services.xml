@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="betacie_paypal.paypal.class">Betacie\Bundle\PaypalBundle\Paypal</parameter>
         <parameter key="betacie_paypal.paypal_manager.class">Betacie\Bundle\PaypalBundle\Model\PaypalManager</parameter>
-        <parameter key="betacie.paypal.checkout_listener.class">Betacie\Bundle\PaypalBundle\Listener\CheckoutListener</parameter>
         <parameter key="betacie_paypal.express_checkout_request.class">Betacie\Bundle\PaypalBundle\Request\ExpressCheckoutRequest</parameter>
     </parameters>
 
@@ -16,6 +15,7 @@
             <argument>%betacie_paypal.credentials.user%</argument>
             <argument>%betacie_paypal.credentials.password%</argument>
             <argument>%betacie_paypal.credentials.signature%</argument>
+            <argument type="service" id="betacie.paypal_manager" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument>%betacie_paypal.debug%</argument>
@@ -26,11 +26,6 @@
         </service>
 
         <service id="betacie_paypal.express_checkout_request" class="%betacie_paypal.express_checkout_request.class%" />
-
-        <service id="betacie.paypal.checkout_listener" class="%betacie.paypal.checkout_listener.class%">
-            <argument type="service" id="betacie.paypal_manager" />
-            <tag name="kernel.event_listener" event="betacie.set_checkout.success" method="onSetCheckoutSuccess" />
-        </service>
     </services>
 
 </container>
