@@ -2,7 +2,7 @@
 
 namespace Betacie\Bundle\PaypalBundle\Controller;
 
-use Betacie\Bundle\PaypalBundle\Event\CheckoutEvent;
+use Betacie\Bundle\PaypalBundle\Event\GetResponseForCheckoutEvent;
 use Betacie\Bundle\PaypalBundle\PaypalEvents;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -38,8 +38,8 @@ class CheckoutController implements ContainerAwareInterface
             // DO transaction, recall Paypal API
             if ($doResponse->isSuccess()) {
                 if ($doResponse->get('PAYMENTINFO_0_PAYMENTSTATUS') === 'Completed') {
-                    $event = new CheckoutEvent($checkout);
-                    $this->container->get('event_dispatcher')->dispatch(PaypalEvents::CHECKOUT_COMPLETED, $event);
+                    $event = new GetResponseForCheckoutEvent($checkout);
+                    $this->container->get('event_dispatcher')->dispatch(PaypalEvents::DO_CHECKOUT_COMPLETED, $event);
                 }
 
                 // Create Paypal trace, store transaction information in BDD
@@ -52,8 +52,8 @@ class CheckoutController implements ContainerAwareInterface
 
                 $em->flush();
 
-                if ($response = $event->getResponse()) {
-                    return $response;
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
                 }
 
                 return new RedirectResponse($this->container->get('router')->generate('betacie_paypal.default_success'));
@@ -83,8 +83,8 @@ class CheckoutController implements ContainerAwareInterface
             $response = $this->container->get('betacie.paypal')->getExpressCheckoutDetails($token);
 
             if ($response->isSuccess() && in_array($response->get('CHECKOUTSTATUS'), array('PaymentActionNotInitiated', 'PaymentActionFailed'))) {
-                $event = new CheckoutEvent($checkout);
-                $this->container->get('event_dispatcher')->dispatch(PaypalEvents::CHECKOUT_COMPLETED, $event);
+                $event = new GetResponseForCheckoutEvent($checkout);
+                $this->container->get('event_dispatcher')->dispatch(PaypalEvents::CHECKOUT_CANCELLED, $event);
 
                 // Paypal trace, store transaction information in BDD
                 $checkout
@@ -94,8 +94,8 @@ class CheckoutController implements ContainerAwareInterface
 
                 $em->flush();
 
-                if ($response = $event->getResponse()) {
-                    return $response;
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
                 }
             }
 

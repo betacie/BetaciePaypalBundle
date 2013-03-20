@@ -2,7 +2,7 @@
 
 namespace Betacie\Bundle\PaypalBundle;
 
-use Betacie\Bundle\PaypalBundle\Event\CheckoutEvent;
+use Betacie\Bundle\PaypalBundle\Event\SetCheckoutSuccessEvent;
 use Betacie\Bundle\PaypalBundle\Model\PaypalManager;
 use Betacie\Bundle\PaypalBundle\Model\TransactionInterface;
 use Betacie\Bundle\PaypalBundle\PaypalEvents;
@@ -57,7 +57,7 @@ class Paypal
 
         if ($response->isSuccess()) {
             $checkout = $this->manager->printCheckout($response->getToken());
-            $this->dispatcher->dispatch(PaypalEvents::SET_CHECKOUT_SUCCESS, new CheckoutEvent($checkout));
+            $this->dispatcher->dispatch(PaypalEvents::SET_CHECKOUT_SUCCESS, new SetCheckoutSuccessEvent($checkout, $transaction));
         }
 
         return $response;

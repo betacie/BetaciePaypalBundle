@@ -6,7 +6,7 @@ use Betacie\Bundle\PaypalBundle\Entity\Checkout;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckoutEvent extends Event
+class GetResponseForCheckoutEvent extends Event
 {
     private $checkout;
 
@@ -30,5 +30,10 @@ class CheckoutEvent extends Event
     public function getResponse()
     {
         return $this->response;
+    }
+    
+    public function hasResponse()
+    {
+        return null !== $this->response;
     }
 }
