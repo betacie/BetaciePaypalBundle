@@ -1,10 +1,12 @@
 {
     "name": "betacie/paypal-bundle",
     "description": "This bundle provides methods for using the paypal API",
+    "license": "MIT",
     "authors": [
         {
             "name": "yoye",
-            "email": "y.aparici@gmail.com"
+            "email": "y.aparici@gmail.com",
+            "homepage": "http://yoann.aparici.fr"
         }
     ],
     "minimum-stability": "dev",
@@ -13,7 +15,7 @@
         "symfony/framework-bundle": ">=2.1,<2.3-dev"
     },
     "autoload": {
-        "psr-0": {"Betacie\\PaypalBundle": ""}
+        "psr-0": {"Betacie\\Bundle\\PaypalBundle": ""}
     },
-    "target-dir": "Betacie/PaypalBundle"
+    "target-dir": "Betacie/Bundle/PaypalBundle"
 }
