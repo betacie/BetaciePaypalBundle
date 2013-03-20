@@ -1,0 +1,19 @@
+{
+    "name": "betacie/paypal-bundle",
+    "description": "This bundle provides methods for using the paypal API",
+    "authors": [
+        {
+            "name": "yoye",
+            "email": "y.aparici@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": ">=2.1,<2.3-dev"
+    },
+    "autoload": {
+        "psr-0": {"Betacie\\PaypalBundle": ""}
+    },
+    "target-dir": "Betacie/PaypalBundle"
+}
