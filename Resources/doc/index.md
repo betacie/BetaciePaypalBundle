@@ -8,7 +8,7 @@ Configuration
 
 First of all, you must defined your paypal credentials.
 
-```yml
+```yaml
 # app/config/config.yml
 
 betacie_paypal:
@@ -26,7 +26,7 @@ Routing
 -------
 
 Now you must load routing:
-```yml
+```yaml
 # app/config/routing.yml
 
 betacie_paypal:
@@ -48,5 +48,5 @@ $ php app/console doctrine:schema:update --force
 How to use ?
 ------------
 
-[Checkout Express](checkout.rst)
-[Mass payment](masspay.rst)
+[Checkout Express](checkout.md)
+[Mass payment](masspay.md)

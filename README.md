@@ -10,7 +10,7 @@ Features include:
 Documentation
 -------------
 You can find a complete documentation in `Resources/doc` :
-[Getting started](https://github.com/betacie/BetaciePaypalBundle/tree/master/Resources/doc/index.rst)
+[Getting started](https://github.com/betacie/BetaciePaypalBundle/tree/master/Resources/doc/index.md)
 
 Prerequisites
 -------------
@@ -37,7 +37,7 @@ Add BetaciePaypalBundle in your composer.json
 
 Now download the bundle:
 
-``` bash
+```bash
 $ php composer.phar update betacie/paypal-bundle
 ```
 
