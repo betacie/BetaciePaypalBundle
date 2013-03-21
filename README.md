@@ -7,11 +7,6 @@ Features include:
 * Express Checkout
 * Mass payment
 
-Documentation
--------------
-You can find a complete documentation in `Resources/doc` :
-[Getting started](https://github.com/betacie/BetaciePaypalBundle/tree/master/Resources/doc/index.md)
-
 Prerequisites
 -------------
 You must use Doctrine as database management, nor Propel neither MongoDB are supported.
@@ -57,3 +52,8 @@ public function registerBundles()
 ```
 
 That's it!
+
+Documentation
+-------------
+You can find a complete documentation in `Resources/doc` :
+[Getting started](https://github.com/betacie/BetaciePaypalBundle/tree/master/Resources/doc/index.md)

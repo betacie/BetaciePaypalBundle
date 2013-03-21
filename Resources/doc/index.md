@@ -13,9 +13,9 @@ First of all, you must defined your paypal credentials.
 
 betacie_paypal:
     credentials:
-        user: user              # As defined in your dashboard
-        password: password      # As defined in your dashboard
-        signature: signature    # As defined in your dashboard
+        user: user              # As defined in your paypal dashboard
+        password: password      # As defined in your paypal dashboard
+        signature: signature    # As defined in your paypal dashboard
     debug: true                 # true or false
 ```
 
@@ -48,5 +48,5 @@ $ php app/console doctrine:schema:update --force
 How to use ?
 ------------
 
-[Checkout Express](checkout.md)
-[Mass payment](masspay.md)
+*[Checkout Express](checkout.md)
+*[Mass payment](masspay.md)
