@@ -48,5 +48,5 @@ $ php app/console doctrine:schema:update --force
 How to use ?
 ------------
 
-*[Checkout Express](checkout.md)
-*[MassPay](masspay.md)
+- [Checkout Express](checkout.md)
+- [MassPay](masspay.md)
