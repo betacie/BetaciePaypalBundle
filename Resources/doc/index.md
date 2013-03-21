@@ -49,4 +49,4 @@ How to use ?
 ------------
 
 *[Checkout Express](checkout.md)
-*[Mass payment](masspay.md)
+*[MassPay](masspay.md)
