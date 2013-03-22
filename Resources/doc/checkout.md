@@ -56,7 +56,7 @@ Register your listener:
 
 ```yml
 services:
-    acme_user.password_resetting:
+    acme_payment.paypal_listener:
         class: Acme\Bundle\PaymentBundle\Listener\PaypalListener
         tags:
             - { name: kernel.event_subscriber }
