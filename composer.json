@@ -2,11 +2,17 @@
     "name": "betacie/paypal-bundle",
     "description": "This bundle provides methods for using the paypal API",
     "license": "MIT",
+    "type": "symfony-bundle",
     "authors": [
         {
             "name": "yoye",
             "email": "y.aparici@gmail.com",
             "homepage": "http://yoann.aparici.fr"
+        },
+        {
+            "name": "Betacie",
+            "email": "beta@betacie.com",
+            "homepage": "http://www.betacie.com"
         }
     ],
     "require": {
