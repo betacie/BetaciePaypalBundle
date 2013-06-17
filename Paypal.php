@@ -43,7 +43,7 @@ class Paypal
      * @param  \Betacie\Bundle\PaypalBundle\Model\TransactionInterface $transaction
      * @return \Betacie\Bundle\PaypalBundle\Response\Response
      */
-    public function setExpressCheckout(TransactionInterface $transaction)
+    public function setExpressCheckout(TransactionInterface $transaction, array $parameters = array())
     {
         $request = new ExpressCheckoutRequest(array(
             'METHOD' => 'SetExpressCheckout',
@@ -52,6 +52,10 @@ class Paypal
         ));
 
         $request->addTransaction($transaction);
+        
+        foreach ($parameters as $key => $value) {
+            $request->add($key, $value);
+        }
 
         $response = $this->request($request);
 
