@@ -10,6 +10,17 @@ class Response
     {
         $this->parameters = $parameters;
     }
+    
+    public function __toString()
+    {
+        $parts = array();
+        
+        foreach ($this->parameters as $key => $value) {
+            $parts[] = $key.': '.$value;
+        }
+        
+        return implode(' - ', $parts);
+    }
 
     /**
      * Get token from paypal response
